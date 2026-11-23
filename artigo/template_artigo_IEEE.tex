@@ -1,0 +1,201 @@
+%% =====================================================================
+%%  TEMPLATE DE ARTIGO — ATIVIDADE DE REDES NEURAIS ARTIFICIAIS
+%%  Modelo IEEE (classe IEEEtran) — usar no Overleaf
+%% ---------------------------------------------------------------------
+%%  INSTRUÇÕES RÁPIDAS:
+%%  1. No Overleaf, clique em "New Project > Upload Project" e envie
+%%     este arquivo (ou cole o conteúdo em um projeto novo).
+%%  2. Substitua os textos de exemplo pelos seus resultados.
+%%  3. Gere as figuras (matriz de confusão, curva ROC) em matplotlib e
+%%     faça upload dos arquivos .png/.pdf para o Overleaf.
+%%  4. Limite: 3 páginas no máximo (incluindo figuras e referências).
+%% =====================================================================
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+% ---------- Pacotes (não é necessário adicionar mais) ----------
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{url}
+
+% ---------- Metadados do PDF ----------
+\usepackage[hidelinks]{hyperref}
+% Permite que URLs longas quebrem de linha (evita linha ultrapassando a coluna)
+\def\UrlBreaks{\do/\do.\do-\do:}
+\hypersetup{
+    pdftitle={Template de Artigo - Redes Neurais Artificiais},
+    pdfauthor={Nome do Aluno 1, Nome do Aluno 2, Nome do Aluno 3}
+}
+
+\begin{document}
+
+% ---------- Título e autores (EDITE AQUI) ----------
+\title{Exemplo de Título: Comparação de Arquiteturas de MLP para
+Classificação do Dataset Breast Cancer Wisconsin\thanks{Trabalho
+apresentado à disciplina de Redes Neurais Artificiais.}}
+% Dica: o título deve refletir a pergunta experimental do seu artigo.
+
+\author{\IEEEauthorblockN{Nome do Aluno 1}
+\IEEEauthorblockA{Departamento de Computação\\
+Universidade Exemplo\\
+Email: aluno1@exemplo.edu}
+\and
+\IEEEauthorblockN{Nome do Aluno 2}
+\IEEEauthorblockA{Departamento de Computação\\
+Universidade Exemplo\\
+Email: aluno2@exemplo.edu}
+\and
+\IEEEauthorblockN{Nome do Aluno 3}
+\IEEEauthorblockA{Departamento de Computação\\
+Universidade Exemplo\\
+Email: aluno3@exemplo.edu}}
+
+\maketitle
+
+% ---------- Resumo ----------
+\begin{abstract}
+% Resumo de 4 a 6 linhas: contexto, o que foi testado, método, principais
+% resultados (com números) e conclusão. Exemplo:
+Este artigo compara três arquiteturas de perceptron multicamadas (MLP)
+na tarefa de classificação do dataset Breast Cancer Wisconsin. Foram
+avaliadas redes rasa (16), média (32--16) e profunda (64--32--16),
+mantendo fixos o otimizador Adam, a taxa de aprendizado e o número de
+épocas. Os resultados mostram que a arquitetura média obteve o melhor
+equilíbrio entre desempenho e generalização, com acurácia de 97,4\% e
+F1-score de 0,974, enquanto a rede profunda apresentou sinais de
+overfitting.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Redes neurais artificiais, perceptron multicamadas, classificação,
+métricas de avaliação, matriz de confusão, curva ROC.
+\end{IEEEkeywords}
+
+% =====================================================================
+\section{Introdução}
+% Contextualize o problema (2 parágrafos) e, no final, faça a pergunta
+% experimental. Exemplo:
+A escolha da arquitetura de uma rede neural -- número de camadas e de
+neurônios -- influencia diretamente sua capacidade de generalização.
+Redes muito simples podem subajustar (underfitting), enquanto redes
+muito complexas podem memorizar o conjunto de treino e falhar no teste
+(overfitting)~\cite{goodfellow2016deep}.
+
+Neste trabalho, investiga-se a seguinte pergunta: \emph{como a
+profundidade e a largura de uma MLP afetam o desempenho de
+classificação no dataset Breast Cancer Wisconsin?} A resposta é
+verificada experimentalmente por meio das métricas estudadas em sala:
+acurácia, precisão, recall, F1-score, curva ROC e matriz de confusão.
+
+% =====================================================================
+\section{Metodologia}
+
+\subsection{Dataset}
+% Descreva: origem com citação, número de amostras, atributos, classes e
+% qualquer pré-processamento (normalização, dados faltantes, etc.).
+Utilizou-se o dataset Breast Cancer Wisconsin (Diagnostic), disponível
+no repositório UCI Machine Learning~\cite{kelly2023uci}. O dataset
+possui 569 amostras, 30 atributos numéricos e 2 classes (maligno e
+benigno). Os atributos foram normalizados para média 0 e desvio padrão
+1. A divisão entre treino (80\%) e teste (20\%) foi estratificada por
+classe, com semente aleatória fixada em 42 para reprodutibilidade.
+
+\subsection{Modelo e protocolo experimental}
+% Descreva arquitetura(s), ativação, perda, otimizador, épocas e protocolo.
+Foram treinadas três MLPs com função de ativação ReLU nas camadas
+ocultas e sigmoide na camada de saída, função de perda
+binary cross-entropy e otimizador Adam~\cite{kingma2015adam} com taxa de
+aprendizado $10^{-3}$, por 100 épocas. As arquiteturas avaliadas foram:
+MLP rasa (16), MLP média (32--16) e MLP profunda (64--32--16). Todas as
+redes foram implementadas com a biblioteca scikit-learn~\cite{pedregosa2011scikit}.
+
+% =====================================================================
+\section{Resultados e Discussão}
+% Apresente as métricas em tabela, a matriz de confusão e a curva ROC.
+% INTERPRETE os números: o que a matriz de confusão revela? A ROC?
+
+A Tabela~\ref{tab:metricas} resume o desempenho das três arquiteturas no
+conjunto de teste. A MLP média obteve a melhor acurácia (97,4\%) e
+F1-score (0,974). A rede profunda teve acurácia de treino de 100\%,
+mas desempenho inferior no teste, indicando overfitting.
+
+\begin{table}[htbp]
+    \caption{Desempenho das arquiteturas no conjunto de teste.}
+    \label{tab:metricas}
+    \centering
+    \setlength{\tabcolsep}{4pt}
+    \footnotesize
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Arquitetura} & \textbf{Acurácia} & \textbf{Precisão} &
+        \textbf{Recall} & \textbf{F1} \\
+        \midrule
+        Rasa (16)             & 0,965 & 0,960 & 0,958 & 0,959 \\
+        Média (32--16)        & \textbf{0,974} & \textbf{0,976} &
+        \textbf{0,972} & \textbf{0,974} \\
+        Profunda (64--32--16) & 0,956 & 0,951 & 0,949 & 0,950 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+% Dica: substitua os valores acima pelos seus resultados reais.
+
+A Figura~\ref{fig:matriz} apresenta a matriz de confusão da melhor
+arquitetura. Observa-se apenas 1 falso negativo, o que é crítico em
+aplicações médicas, pois representa um tumor maligno classificado como
+benigno.
+
+\begin{figure}[htbp]
+    \centerline{\includegraphics[width=\columnwidth]
+    {matriz_confusao.png}}  % <-- faça upload da sua figura no Overleaf
+    \caption{Matriz de confusão da MLP média no conjunto de teste.}
+    \label{fig:matriz}
+\end{figure}
+
+A curva ROC (Figura~\ref{fig:roc}) confirma o excelente poder de
+discriminação do modelo, com área sob a curva (AUC) de 0,997.
+
+\begin{figure}[htbp]
+    \centerline{\includegraphics[width=\columnwidth]
+    {curva_roc.png}}  % <-- faça upload da sua figura no Overleaf
+    \caption{Curva ROC da MLP média no conjunto de teste.}
+    \label{fig:roc}
+\end{figure}
+
+% =====================================================================
+\section{Conclusão}
+% Responda à pergunta da introdução, cite limitações e resultados.
+Os resultados indicam que a arquitetura de profundidade intermediária
+(32--16) ofereceu o melhor compromisso entre capacidade e
+generalização, respondendo à pergunta proposta. Como limitação,
+destaca-se o uso de uma única divisão treino/teste; trabalhos futuros
+poderiam empregar validação cruzada para aumentar a robustez
+estatística das comparações.
+
+% =====================================================================
+\begin{thebibliography}{00}
+% Substitua/adicione suas referências (sempre cite o dataset e as
+% bibliotecas utilizadas). Modelo IEEE: Autor, "Título", fonte, ano.
+\bibitem{kelly2023uci}
+M.~Kelly, R.~Longjohn, and K.~Nottingham, ``The UCI Machine Learning
+Repository,'' University of California, Irvine, 2023. [Online].
+Available: \href{https://archive.ics.uci.edu}{archive.ics.uci.edu}
+\bibitem{goodfellow2016deep}
+I.~Goodfellow, Y.~Bengio, and A.~Courville, \emph{Deep Learning}.
+Cambridge, MA, USA: MIT Press, 2016.
+\bibitem{kingma2015adam}
+D.~P. Kingma and J.~Ba, ``Adam: A method for stochastic
+optimization,'' in \emph{Proc. 3rd Int. Conf. Learning
+Representations (ICLR)}, 2015.
+\bibitem{pedregosa2011scikit}
+F.~Pedregosa et al., ``Scikit-learn: Machine learning in Python,''
+\emph{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830,
+2011.
+\end{thebibliography}
+
+\end{document}
